@@ -1,0 +1,78 @@
+PASSWORD MANAGER
+A password manager is a software to prevent password fatigue by automatically
+generating, autofilling and storing passwords. It can do this for local
+applications or web applications. Password managers typically require a user to
+create and remember a single password to unlock to access the stored passwords.
+
+Local Password Manager
+These are standalone applications installed on a user's device. They offer strong
+security as passworda are stored locally, but acces may be limited to that 
+specific device. (see KeepassXC).
+
+--------------------------------------
+
+End-to-end encryption:
+Lock your passwords and private information with end-to-end AES-CBC 256 bit 
+encryption with HMAC authentication, salted hashing, and Key Derivation Functions 
+such as  PDBKDF2 SHA-256 or Argon2id. All encryption is done locally.
+
+Master passwords
+User data protection begins the moment a user creates an account and a master
+password. A master password is the token a user uses to access their vault, 
+where sensitive data is stored. Users should create their accounts with a strong
+master password. It is very important that users never forget their master 
+passwords. Master passwords are:
+    - cleared or marked for removal from memory after usage
+    - unable to be seen or read
+Because of this, and the fact that your data is fully encrypted and/or hashed,
+forgetting a master password will result in a user being locked out of their 
+account.
+
+HASHING, KEY DERIVATION, and ENCRYPTION
+
+- Account Creation
+When an account is created, Password-Based Key Derivation Function 2 (PBKDF2) is 
+used with 600,000 iteration rounds to stretch the user's master password with a 
+salt of ther user's email address.
+The resulting salted value is the 256-bit Master Key. The Master Key is then again
+stretched to 512-bits using HMAC-based Extract-and-Expand Key Derivation Function
+(HKDF), resulting in the Stretched Master Key.
+
+Next, a 512-bit Generated Symmetric Key and 128-bit Initialization Vector (IV) are 
+created using a CSPRNG. The Generated Symmetric Key is encrypted with AES-256 bit
+encryption using the Stretched Master Key and IV. The result is called the Protected
+Symmetric Key, and is the main key associated with the user. The Protected Symmetric 
+Key is stored.
+
+(An asymmetric key pair is also created when the user registers their account.)
+
+Finally, a Master Password Hash is generated using PBKDF-SHA256 with a payload of
+the Master Key and with a salt of the master password. The Master Password Hash is
+stored and used to authenticate the user account. 
+
+- Authentication and Decryption
+Users are required to enter an email address and a master password to login.
+The app uses PBKDF2 with a default of 600,000 iteration rounds to stretch the 
+master password with a salt of the account email address. The resulting salted 
+value is the 256-bit Master Key. A Master Password Hash, generated using 
+PBKDF-SHA256 with a payload of the Master Key and with a salt of the master password,
+is compared to the hash stored.
+
+Concurrently, the Master Key is stretched to 512-bits in length using HKDF, 
+resulting in the Stretched Master Key. The Protected Symmetric Key, which is 
+stored is decrypted usign this Stretched Master Key. The resultant Symmetric Key 
+is used by the client to decrypt vault data. This decryption is done entirely in 
+the localc app. Master passwords and Stretched Master Key are never stored.
+
+The account encryption key (User Symmetric Key) is kept in memory while the app
+is unlocked in order to decrypt vault data.
+
+- How vault data is encrypted
+All vault data (logins, cards, identities, notes, and secrets) are protected with 
+end-to-end encryption. Data that you  choose to store is first stored as an object 
+called a Cipher. Ciphers are encrypted locally when a vault item is created, edited,
+or imported, using a unique, random, 64-byte Cipher Key. Each Cipher Key is encrypted
+with the User Symmetric Key. 
+When a user logs in, the app gains access to their User Symmetric Key by decrypting
+their Protected Symmetric Key using the Stretched Master Key. Cipher Keys are locally
+decrypted and the resultant value is used to decrypt the vault data.
