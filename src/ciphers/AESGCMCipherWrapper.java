@@ -20,7 +20,7 @@ public class AESGCMCipherWrapper extends CipherWrapper{
     /*
      * Generates the correct AlgorithmParameterSpec before calling the right superclass method to encrypt a plaintext.
      */
-    public byte[] encrypt(String plaintext, String additionalData, byte[] iv) throws Exception {
+    public byte[] encrypt(byte[] plaintext, String additionalData, byte[] iv) throws Exception {
 
     	GCMParameterSpec spec = new GCMParameterSpec(MAC_LENGTH, iv);
     	return super.encrypt(plaintext, additionalData, spec);

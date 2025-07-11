@@ -1,5 +1,6 @@
 package digests;
 
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
@@ -10,29 +11,34 @@ import util.Utils;
 
 public class PBKDF2Wrapper {
 	private int iterations;
-	private byte[] salt;
 	private SecretKeyFactory skf;
 	
-	public PBKDF2Wrapper(int iterations, byte[] salt) throws NoSuchAlgorithmException {
-		this.skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-		this.salt = salt;
+	public PBKDF2Wrapper(String algorithm, int iterations) throws NoSuchAlgorithmException {
+		this.skf = SecretKeyFactory.getInstance(algorithm);
 		this.iterations = iterations;
 	}
 	
-	public String generatePasswordHash(char[] password) throws InvalidKeySpecException {
-		PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, 256);
+	public byte[] generatePasswordHash(byte[] password, byte[] salt, int key_len) throws InvalidKeySpecException {
+		char[] charArray = new String(password, StandardCharsets.UTF_8).toCharArray();
+		PBEKeySpec spec = new PBEKeySpec(charArray, salt, iterations, key_len);
 		byte[] hash = skf.generateSecret(spec).getEncoded();
 		spec.clearPassword(); // clear password from memory
-		return iterations + ":" + Utils.toHexString(salt) + ":" + Utils.toHexString(hash);
+		return hash;
 	}
 	
-	public static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public String formatStoredHash(byte[] raw, byte[] salt, int bitLength) throws InvalidKeySpecException {
+	    return iterations + ":" + Utils.toHexString(salt) + ":" + Utils.toHexString(raw);
+	}
+	/*
+	public static boolean validatePassword(byte[] originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		String[] parts = storedPassword.split(":");
 		int iterations = Integer.parseInt(parts[0]);
 		byte[] salt = Utils.fromHexString(parts[1]);
 		byte[] hash = Utils.fromHexString(parts[2]);
 		
-		PBEKeySpec spec = new PBEKeySpec(originalPassword.toCharArray(), salt, iterations, hash.length * 8);
+		char[] charArray = new String(originalPassword, StandardCharsets.UTF_8).toCharArray();
+		
+		PBEKeySpec spec = new PBEKeySpec(charArray, salt, iterations, hash.length * 8);
 		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 		byte[] testHash = skf.generateSecret(spec).getEncoded();
 		
@@ -43,7 +49,7 @@ public class PBKDF2Wrapper {
 		return diff == 0;
 	}
 	
-	/*
+	
 	public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		String password = "Hello!";
 		int iterations = 600000;

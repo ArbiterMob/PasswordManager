@@ -1,9 +1,10 @@
 package ciphers;
 
-import util.Utils;
 import prngs.SecureRandomWrapper;
 
 import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
+
 import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 
@@ -37,18 +38,23 @@ public class CipherWrapper {
      * Encryption method for ECB that does not require additional parameters.
      * Encrypts a plaintext using the previously computed secret key.
      */
-    protected byte[] encrypt(String plaintext) throws Exception {
+    protected byte[] encrypt(byte[] plaintext) throws Exception {
     	this.cipher.init(Cipher.ENCRYPT_MODE, this.sk);
-    	return this.cipher.doFinal(Utils.toByteArray(plaintext));
+    	return this.cipher.doFinal(plaintext);
     }
     
     /*
      * Encryption method for modes of operations that do require additional parameters.
      * Encrypts a plaintext using the previously computed secret key.
      */
-    protected byte[] encrypt(String plaintext, AlgorithmParameterSpec spec) throws Exception {
+    protected byte[] encrypt(byte[] plaintext, AlgorithmParameterSpec spec) throws Exception {
     	this.cipher.init(Cipher.ENCRYPT_MODE, this.sk, spec);
-    	return this.cipher.doFinal(Utils.toByteArray(plaintext));
+    	return this.cipher.doFinal(plaintext);
+    }
+    
+    protected byte[] encrypt(byte[] plaintext, AlgorithmParameterSpec spec, SecretKeySpec sk) throws Exception {
+    	this.cipher.init(Cipher.ENCRYPT_MODE, sk, spec);
+    	return this.cipher.doFinal(plaintext);
     }
     
     /*
@@ -56,11 +62,11 @@ public class CipherWrapper {
      * - Updates the inner buffer with additional data.
      * - Encrypts a plaintext using the previously computed secret key.
      */
-    protected byte[] encrypt(String plaintext, String additionalData, AlgorithmParameterSpec spec) throws Exception {
+    protected byte[] encrypt(byte[] plaintext, String additionalData, AlgorithmParameterSpec spec) throws Exception {
 
     	this.cipher.init(Cipher.ENCRYPT_MODE, this.sk, spec);
     	this.cipher.updateAAD(additionalData.getBytes());
-    	return this.cipher.doFinal(Utils.toByteArray(plaintext));
+    	return this.cipher.doFinal(plaintext);
     }
     
     /*
@@ -79,6 +85,11 @@ public class CipherWrapper {
     protected String decrypt(byte[] ciphertext, AlgorithmParameterSpec spec) throws Exception {
     	this.cipher.init(Cipher.DECRYPT_MODE, this.sk, spec);
     	return new String(this.cipher.doFinal(ciphertext));
+    }
+    
+    protected byte[] decrypt(byte[] ciphertext, AlgorithmParameterSpec spec, SecretKeySpec sk) throws Exception {
+    	this.cipher.init(Cipher.DECRYPT_MODE, sk, spec);
+    	return this.cipher.doFinal(ciphertext);
     }
 
     /*

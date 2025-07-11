@@ -12,8 +12,13 @@ public class MacWrapper {
 	private SecretKeySpec skp;
 	private Mac mac;
 	
-	public MacWrapper(String key, String algorithm) throws NoSuchAlgorithmException {
-		this.skp = new SecretKeySpec(key.getBytes(), algorithm);
+	public MacWrapper(byte[] key, String algorithm) throws NoSuchAlgorithmException {
+		this.skp = new SecretKeySpec(key, algorithm);
+		this.mac = Mac.getInstance(algorithm);
+	}
+	
+	public MacWrapper(SecretKeySpec spec, String algorithm) throws NoSuchAlgorithmException {
+		this.skp = spec;
 		this.mac = Mac.getInstance(algorithm);
 	}
 	

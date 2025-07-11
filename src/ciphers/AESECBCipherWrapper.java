@@ -16,7 +16,7 @@ public class AESECBCipherWrapper extends CipherWrapper {
     /*
      * Calls the right superclass method to encrypt a plaintext.
      */
-    public byte[] encrypt(String plaintext) throws Exception {
+    public byte[] encrypt(byte[] plaintext) throws Exception {
     	return super.encrypt(plaintext);
     }
 

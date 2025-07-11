@@ -1,6 +1,7 @@
 package ciphers;
 
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import prngs.SecureRandomWrapper;
 
@@ -18,16 +19,16 @@ public class AESCBCCipherWrapper extends CipherWrapper {
     /*
      * Generates the correct AlgorithmParameterSpec before calling the right superclass method to encrypt a plaintext.
      */
-    public byte[] encrypt(String plaintext, byte[] iv) throws Exception {
+    public byte[] encrypt(byte[] plaintext, byte[] iv, SecretKeySpec spec) throws Exception {
     	IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
-    	return super.encrypt(plaintext, ivParameterSpec);
+    	return super.encrypt(plaintext, ivParameterSpec, spec);
     }
     
     /*
      * Generates the correct AlgorithmParameterSpec before calling the right superclass method to decrypt a plaintext.
      */
-    public String decrypt(byte[] ciphertext, byte[] iv) throws Exception {
+    public byte[] decrypt(byte[] ciphertext, byte[] iv, SecretKeySpec spec) throws Exception {
     	IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);    
-    	return super.decrypt(ciphertext, ivParameterSpec);
+    	return super.decrypt(ciphertext, ivParameterSpec, spec);
     }
 }

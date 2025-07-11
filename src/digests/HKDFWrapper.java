@@ -93,4 +93,8 @@ public class HKDFWrapper {
 
         return buffer.array();
 	}
+	
+	public byte[] extractAndExpand(byte[] saltExtract, byte[] inputKeyingMaterial, byte[] infoExpand, int outLengthByte) throws InvalidKeyException, NoSuchAlgorithmException {
+		return expand(extract(saltExtract, inputKeyingMaterial), infoExpand, outLengthByte);
+	}
 }
