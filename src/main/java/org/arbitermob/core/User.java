@@ -1,4 +1,4 @@
-package main;
+package org.arbitermob.core;
 
 public class User {
 	private String saltEmail;

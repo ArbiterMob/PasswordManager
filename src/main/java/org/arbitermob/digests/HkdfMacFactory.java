@@ -1,4 +1,4 @@
-package digests;
+package org.arbitermob.digests;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;

@@ -1,4 +1,4 @@
-package main;
+package org.arbitermob.core;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Console;
@@ -19,11 +19,11 @@ import java.util.Scanner;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import ciphers.AESCBCCipherWrapper;
-import digests.HKDFWrapper;
-import digests.PBKDF2Wrapper;
-import prngs.SecureRandomWrapper;
-import util.Utils;
+import org.arbitermob.ciphers.AESCBCCipherWrapper;
+import org.arbitermob.digests.HKDFWrapper;
+import org.arbitermob.digests.PBKDF2Wrapper;
+import org.arbitermob.prngs.SecureRandomWrapper;
+import org.arbitermob.util.Utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder; 
@@ -325,15 +325,20 @@ public class PasswordManager {
 			// Remove the specific VaultEntry
 			VaultEntry[] entries = removeVaultEntry(nameService, gson);
 			
-			// Update the File
-			String vaultEntries = gson.toJson(entries);
+			if (entries.length != 0) { // if the file is not empty
+				// Update the File
+				String vaultEntries = gson.toJson(entries);
 			
-			File myFile = new File(vaultEntriesFile);
-			RandomAccessFile raf = new RandomAccessFile(myFile, "rw");
-			raf.setLength(0);
-			//raf.seek(0);
-			raf.writeBytes(vaultEntries);
-			raf.close();
+				File myFile = new File(vaultEntriesFile);
+				RandomAccessFile raf = new RandomAccessFile(myFile, "rw");
+				raf.setLength(0);
+				//raf.seek(0);
+				raf.writeBytes(vaultEntries);
+				raf.close();
+			} else {
+				File myFile = new File(vaultEntriesFile);
+				myFile.delete();
+			}
 						
 			// Final Output
 			System.out.println("VaultEntry removed with success!");

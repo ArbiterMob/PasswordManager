@@ -1,4 +1,4 @@
-package digests;
+package org.arbitermob.digests;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import util.Utils;
+import org.arbitermob.util.Utils;
 
 public class MacWrapper {
 	private SecretKeySpec skp;

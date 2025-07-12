@@ -1,4 +1,4 @@
-package digests;
+package org.arbitermob.digests;
 /*
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;

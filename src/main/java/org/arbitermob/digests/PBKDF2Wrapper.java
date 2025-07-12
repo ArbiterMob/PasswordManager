@@ -1,4 +1,4 @@
-package digests;
+package org.arbitermob.digests;
 
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
@@ -7,7 +7,7 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-import util.Utils;
+import org.arbitermob.util.Utils;
 
 public class PBKDF2Wrapper {
 	private int iterations;

@@ -1,9 +1,9 @@
-package ciphers;
-
-import prngs.SecureRandomWrapper;
+package org.arbitermob.ciphers;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.arbitermob.prngs.SecureRandomWrapper;
 
 import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;

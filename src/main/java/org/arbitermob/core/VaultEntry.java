@@ -1,4 +1,4 @@
-package main;
+package org.arbitermob.core;
 
 public class VaultEntry {
 	private String nameService;

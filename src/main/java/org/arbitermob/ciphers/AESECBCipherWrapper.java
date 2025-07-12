@@ -1,6 +1,6 @@
-package ciphers;
+package org.arbitermob.ciphers;
 
-import prngs.SecureRandomWrapper;
+import org.arbitermob.prngs.SecureRandomWrapper;
 
 public class AESECBCipherWrapper extends CipherWrapper {
 	// This class extends the CipherWrapper class to implement methods that are specific for AES in ECB mode.

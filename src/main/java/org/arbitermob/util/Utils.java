@@ -1,4 +1,4 @@
-package util;
+package org.arbitermob.util;
 import java.util.HexFormat;
 
 public class Utils {

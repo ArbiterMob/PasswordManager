@@ -1,7 +1,8 @@
-package ciphers;
+package org.arbitermob.ciphers;
 
-import prngs.SecureRandomWrapper;
 import javax.crypto.spec.GCMParameterSpec;
+
+import org.arbitermob.prngs.SecureRandomWrapper;
 
 public class AESGCMCipherWrapper extends CipherWrapper{
 	// AES-GCM is an AEAD cipher and requires the user to input the length of the Message Authentication Code.

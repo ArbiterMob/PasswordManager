@@ -1,4 +1,4 @@
-package prngs;
+package org.arbitermob.prngs;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;

@@ -1,9 +1,9 @@
-package ciphers;
+package org.arbitermob.ciphers;
 
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import prngs.SecureRandomWrapper;
+import org.arbitermob.prngs.SecureRandomWrapper;
 
 public class AESCBCCipherWrapper extends CipherWrapper {
 	// This class extends the CipherWrapper class to implement methods that are specific for AES in CBC mode.
