@@ -3,7 +3,7 @@ This simple CLI application allows the user to securely store, retrieve, and man
 
 ---
 
-## Security Architecure
+## Security Architecture
 Below is a high-level view of the key steps taken to protect the data.
 
 ### Registration (Key Derivation and Encryption)
@@ -41,6 +41,7 @@ Below is a high-level view of the key steps taken to protect the data.
 ## Encryption Protocols
 * **AES-256-CBC** for symmetric encryption
 * **HMAC-SHA256** for messagge autentication
+
 This combined scheme (AES256-CBC-HMAC-SHA256) protects confidentiality, integrity and authentication, and would support future cloud storage securely
 
 ---
